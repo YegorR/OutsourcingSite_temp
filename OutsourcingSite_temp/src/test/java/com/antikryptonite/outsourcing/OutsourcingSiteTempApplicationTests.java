@@ -1,4 +1,4 @@
-package com.antikryptonite.OutsourcingSite_temp;
+package com.antikryptonite.outsourcing;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

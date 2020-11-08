@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping("/ping")
-    public String ping() { return  "pong"; }
+    public String ping() { return  "pong"; } //Проверка связи: по запросу http://localhost:8082/api/users/ping должен возвращаться pong
 
 }

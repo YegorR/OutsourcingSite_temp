@@ -21,20 +21,6 @@ public class JwtProvider {
     private long validityInMilliseconds;
 
     /**
-     * Геттер секретный ключ JWT?
-     */
-    public String getJwtSecret() {
-        return jwtSecret;
-    }
-
-    /**
-     * Геттер продолжительности работы токена
-     */
-    public long getValidityInMilliseconds() {
-        return validityInMilliseconds;
-    }
-
-    /**
      * Генерация токена
      *
      * @param login - Логин пользователя
@@ -42,11 +28,11 @@ public class JwtProvider {
      */
     public String generateToken(String login) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + getValidityInMilliseconds());
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setSubject(login)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS512, getJwtSecret())
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 

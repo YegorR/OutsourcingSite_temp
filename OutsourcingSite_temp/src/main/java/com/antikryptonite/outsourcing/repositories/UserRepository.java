@@ -11,7 +11,6 @@ import java.util.UUID;
  * Репозиторий пользователя
  */
 @Repository
-@EntityScan(basePackages = {"com.antikryptonite.outsourcing.entities.UserEntity"})
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
     /**

@@ -30,7 +30,6 @@ public class AuthController {
 
     /**
      * POST-запрос на регистрацию
-     * http://localhost:8082/api/register
      * @param registrationRequest - тело запроса с логином и паролем
      * @return - возвращает строку ОК
      */
@@ -42,7 +41,6 @@ public class AuthController {
 
     /**
      * POST-запрос на аутентификацию
-     * http://localhost:8082/api/auth
      * @param request - тело запроса с логином и паролем
      * @return - возвращает уникальный токен пользователя
      */

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
  * Репозиторий роли
  */
 @Repository
-@EntityScan(basePackages = {"com.antikryptonite.outsourcing.entities.RoleEntity"})
 public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
 
     /**

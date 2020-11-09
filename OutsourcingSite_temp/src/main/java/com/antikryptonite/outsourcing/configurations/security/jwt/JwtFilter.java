@@ -15,7 +15,7 @@ import java.io.IOException;
 import static org.springframework.util.StringUtils.hasText;
 
 /**
- * JSON Web Token фильтра?
+ * Фильтр, отвечающи за обработку JWT
  */
 @Component
 @Log
@@ -55,10 +55,10 @@ public class JwtFilter extends GenericFilterBean {
     /**
      * Получение токена из хедера Authorization
      *
-     * @param request - запрос сервлета?
+     * @param request - запрос
      * @return - возвращает найденный токен
      */
-    private String getTokenFromRequest(HttpServletRequest request) {
+    private static String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);

@@ -7,12 +7,12 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Component;
 
 /**
- * Это сервис предыдущего ДТО?
+ * Это сервис предыдущего ДТО? TODO: это условно говоря сервис для получения учетных данных пользователя
  */
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
+    @Autowired  //TODO: сеттер или конструктор
     private UserService userService;
 
     @Override

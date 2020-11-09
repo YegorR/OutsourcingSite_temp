@@ -24,7 +24,7 @@ public class JwtFilter extends GenericFilterBean {
     public static final String AUTHORIZATION = "Authorization";
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private JwtProvider jwtProvider;    //TODO: сеттер или конструктор Autowired
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -44,6 +44,7 @@ public class JwtFilter extends GenericFilterBean {
 
     /**
      * Не знаю, что это. Генерация токена? хотя она в JwtProvider есть...
+     * TODO: Это получение токена из хедера Authorization. Сделай приватным
      *
      * @param request
      * @return

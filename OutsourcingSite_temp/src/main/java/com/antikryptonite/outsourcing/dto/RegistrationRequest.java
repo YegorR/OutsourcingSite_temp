@@ -1,4 +1,4 @@
-package com.antikryptonite.outsourcing.controllers.requestresponse;
+package com.antikryptonite.outsourcing.dto;
 
 import lombok.Data;
 

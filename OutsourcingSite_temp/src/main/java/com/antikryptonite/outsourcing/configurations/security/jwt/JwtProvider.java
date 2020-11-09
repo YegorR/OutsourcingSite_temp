@@ -9,14 +9,14 @@ import java.time.*;
 import java.util.Date;
 
 /**
- * JSON Web Token чего???
+ * JSON Web Token чего???   TODO: компонент для генерации и проверки JWT
  */
 @Component
 @Log
 public class JwtProvider {
 
     @Value("${jwt.secret}")
-    private String jwtSecret;
+    private String jwtSecret;   //TODO: тоже лучше вынести в контсруктор или сеттер
 
     /**
      * Генерация токена
@@ -25,6 +25,7 @@ public class JwtProvider {
      * @return - возвращает сгенерированный токен
      */
     public String generateToken(String login) {
+        //TODO сделай срок токена отдельной переменной, которая тоже будет получаться из @VALUE
         Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
         return Jwts.builder()
                 .setSubject(login)

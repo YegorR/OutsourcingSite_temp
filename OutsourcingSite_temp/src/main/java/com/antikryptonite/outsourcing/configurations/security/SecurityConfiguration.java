@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JwtFilter jwtFilter;
+    private JwtFilter jwtFilter;    //TODO: сеттер или конструктор
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

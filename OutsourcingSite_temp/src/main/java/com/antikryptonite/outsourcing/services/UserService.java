@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    //TODO: @Autowired только в сеттеры или конструктор
     @Autowired
     private UserRepository userRepository;
 
@@ -22,6 +23,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     /** может сделать этот метод void?
+     * TODO: сделай void, но аргументом будет RegistrationRequest - работу с entity вынеси сюда
+     * TODO: сделать проверку логина на уникальность
      * Сохранение пользователя, присвоив ему роль по умолчанию
      *
      * @param userEntity - параметры пользователя

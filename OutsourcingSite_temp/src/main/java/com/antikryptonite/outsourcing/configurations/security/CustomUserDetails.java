@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 /**
- * Это что-то вроде ДТО?
+ * Это что-то вроде ДТО?    TODO: не совсем понимаю, о чем ты, это просто данные пользователя
  */
 public class CustomUserDetails implements UserDetails {
 

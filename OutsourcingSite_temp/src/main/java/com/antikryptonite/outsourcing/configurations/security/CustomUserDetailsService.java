@@ -7,13 +7,20 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Component;
 
 /**
- * Это сервис предыдущего ДТО? TODO: это условно говоря сервис для получения учетных данных пользователя
+ * Сервис для получения учетных данных пользователя
  */
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired  //TODO: сеттер или конструктор
-    private UserService userService;
+    private final UserService userService;
+
+    /**
+     * Конструктор сервиса для получения учетных данных пользователя
+     */
+    @Autowired
+    public CustomUserDetailsService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

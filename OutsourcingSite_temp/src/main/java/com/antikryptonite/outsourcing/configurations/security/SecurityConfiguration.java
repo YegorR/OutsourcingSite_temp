@@ -1,6 +1,6 @@
 package com.antikryptonite.outsourcing.configurations.security;
 
-import com.antikryptonite.outsourcing.configurations.security.jwt.JwtFilter;
+import com.antikryptonite.outsourcing.configurations.security.jwt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +17,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final JwtFilter jwtFilter;
+
+    /**
+     * Конструктор конфигурации Security
+     */
     @Autowired
-    private JwtFilter jwtFilter;    //TODO: сеттер или конструктор
+    public SecurityConfiguration(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

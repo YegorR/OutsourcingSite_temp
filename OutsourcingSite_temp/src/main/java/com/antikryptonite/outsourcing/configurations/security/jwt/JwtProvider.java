@@ -5,18 +5,34 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.*;
 import java.util.Date;
 
 /**
- * JSON Web Token чего???   TODO: компонент для генерации и проверки JWT
+ * Компонент для генерации и проверки JWT
  */
 @Component
 @Log
 public class JwtProvider {
 
     @Value("${jwt.secret}")
-    private String jwtSecret;   //TODO: тоже лучше вынести в контсруктор или сеттер
+    private String jwtSecret;
+
+    @Value("${jwt.token.time}")
+    private long validityInMilliseconds;
+
+    /**
+     * Геттер секретный ключ JWT?
+     */
+    public String getJwtSecret() {
+        return jwtSecret;
+    }
+
+    /**
+     * Геттер продолжительности работы токена
+     */
+    public long getValidityInMilliseconds() {
+        return validityInMilliseconds;
+    }
 
     /**
      * Генерация токена
@@ -25,12 +41,12 @@ public class JwtProvider {
      * @return - возвращает сгенерированный токен
      */
     public String generateToken(String login) {
-        //TODO сделай срок токена отдельной переменной, которая тоже будет получаться из @VALUE
-        Date date = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + getValidityInMilliseconds());
         return Jwts.builder()
                 .setSubject(login)
-                .setExpiration(date)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS512, getJwtSecret())
                 .compact();
     }
 

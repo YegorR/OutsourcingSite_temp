@@ -1,10 +1,15 @@
 package com.antikryptonite.outsourcing.services;
 
+import com.antikryptonite.outsourcing.dto.RegistrationRequest;
 import com.antikryptonite.outsourcing.entities.*;
+import com.antikryptonite.outsourcing.exceptions.UniqueException;
 import com.antikryptonite.outsourcing.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * Сервис пользователя
@@ -12,29 +17,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    //TODO: @Autowired только в сеттеры или конструктор
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /** может сделать этот метод void?
-     * TODO: сделай void, но аргументом будет RegistrationRequest - работу с entity вынеси сюда
-     * TODO: сделать проверку логина на уникальность
+    /**
+     * Конструктор сервиса
+     */
+    @Autowired
+    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
+
+    /**
+     * Сеттер PasswordEncoder
+     */
+    @Autowired
+    public void setPasswordEncoder(@Lazy PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
      * Сохранение пользователя, присвоив ему роль по умолчанию
      *
-     * @param userEntity - параметры пользователя
-     * @return - сохраняет пользователя
+     * @param registrationRequest - параметры пользователя
      */
-    public UserEntity saveUser(UserEntity userEntity) {
-        RoleEntity userRole = roleRepository.findByName("ROLE_USER");
-        userEntity.setRoleEntity(userRole);
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        return userRepository.save(userEntity);
+    public void saveUser(RegistrationRequest registrationRequest) {
+        if (userRepository.findByLogin(registrationRequest.getLogin()) != null) {
+            throw new UniqueException();
+        } else {
+            UserEntity u = new UserEntity();
+            RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+            u.setLogin(registrationRequest.getLogin());
+            u.setId(UUID.randomUUID());
+            u.setRoleEntity(userRole);
+            u.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            userRepository.save(u);
+        }
     }
 
     /**

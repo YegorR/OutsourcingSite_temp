@@ -15,7 +15,7 @@ import java.io.IOException;
 import static org.springframework.util.StringUtils.hasText;
 
 /**
- * JSON Web Token фильтра???
+ * JSON Web Token фильтра?
  */
 @Component
 @Log
@@ -23,11 +23,21 @@ public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION = "Authorization";
 
-    @Autowired
-    private JwtProvider jwtProvider;    //TODO: сеттер или конструктор Autowired
+    private final JwtProvider jwtProvider;
 
+    private final CustomUserDetailsService customUserDetailsService;
+
+    /**
+     * Конструктор JWT
+     *
+     * @param jwtProvider - компонент для генерации и проверки JWT
+     * @param customUserDetailsService - сервис для получения учетных данных пользователя
+     */
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    public JwtFilter(JwtProvider jwtProvider, CustomUserDetailsService customUserDetailsService) {
+        this.jwtProvider = jwtProvider;
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -43,13 +53,12 @@ public class JwtFilter extends GenericFilterBean {
     }
 
     /**
-     * Не знаю, что это. Генерация токена? хотя она в JwtProvider есть...
-     * TODO: Это получение токена из хедера Authorization. Сделай приватным
+     * Получение токена из хедера Authorization
      *
-     * @param request
-     * @return
+     * @param request - запрос сервлета?
+     * @return - возвращает найденный токен
      */
-    public String getTokenFromRequest(HttpServletRequest request) {
+    private String getTokenFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader(AUTHORIZATION);
         if (hasText(bearer) && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);

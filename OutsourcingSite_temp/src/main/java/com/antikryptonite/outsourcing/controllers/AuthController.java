@@ -1,16 +1,13 @@
 package com.antikryptonite.outsourcing.controllers;
 
-import com.antikryptonite.outsourcing.configurations.security.jwt.JwtProvider;
 import com.antikryptonite.outsourcing.dto.AuthRequest;
 import com.antikryptonite.outsourcing.dto.AuthResponse;
 import com.antikryptonite.outsourcing.dto.RegistrationRequest;
-import com.antikryptonite.outsourcing.entities.UserEntity;
-import com.antikryptonite.outsourcing.services.UserService;
+import com.antikryptonite.outsourcing.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 /**
  * Контроллер регистрации и аутентификации
@@ -18,45 +15,40 @@ import java.util.UUID;
 @RestController
 public class AuthController {
 
-    // TODO: @autowired не делаем к переменным, только к сеттерам или конструкторам
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    private final AuthService authService;
+
+    /**
+     * Конструктор контроллера
+     */
     @Autowired
-    private JwtProvider jwtProvider;
+    public AuthController(UserService userService, AuthService authService) {
+        this.userService = userService;
+        this.authService = authService;
+    }
 
     /**
      * POST-запрос на регистрацию
-     *
+     * http://localhost:8082/api/register
      * @param registrationRequest - тело запроса с логином и паролем
-     * @return - возвращает строку ОК, хотя я думаю надо токен сразу возвращать? пользователь же сразу после регистрации заходит в свой акк, или ему еще надо подтвердить регистроцию на почте?
-     * TODO: 1) нужно подтвердить через email 2) токен не надо возввращать, в любом случае после регистрации пользователь должен ещё раз ввести свои данные
+     * @return - возвращает строку ОК
      */
     @PostMapping("/register")
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        //TODO: работу с entity выносим в сервисы
-        UserEntity u = new UserEntity();
-        u.setPassword(registrationRequest.getPassword());
-        u.setLogin(registrationRequest.getLogin());
-
-        u.setId(UUID.randomUUID());
-
-        userService.saveUser(u);
+        userService.saveUser(registrationRequest);
         return "OK";
     }
 
     /**
      * POST-запрос на аутентификацию
-     *
+     * http://localhost:8082/api/auth
      * @param request - тело запроса с логином и паролем
      * @return - возвращает уникальный токен пользователя
      */
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
-        //TODO вынести всё в отдельный сервис
-        UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        String token = jwtProvider.generateToken(userEntity.getLogin());
-        return new AuthResponse(token);
+        return authService.giveToken(request);
     }
 
 }

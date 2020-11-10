@@ -1,7 +1,6 @@
 package com.antikryptonite.outsourcing.entitys;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,8 +10,7 @@ import java.util.UUID;
 /**
  * Сущность таблицы ролей
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "role_table")
 public class RoleEntity {

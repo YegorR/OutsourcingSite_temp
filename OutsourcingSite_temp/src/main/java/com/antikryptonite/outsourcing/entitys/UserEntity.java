@@ -1,7 +1,6 @@
 package com.antikryptonite.outsourcing.entitys;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -9,8 +8,7 @@ import java.util.UUID;
 /**
  * Сущность таблицы пользователей
  */
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "user_table")
 public class UserEntity {

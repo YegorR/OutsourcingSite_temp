@@ -2,6 +2,7 @@ package com.antikryptonite.outsourcing.entities;
 
 import lombok.Data;
 import javax.persistence.*;
+import java.util.UUID;
 
 /**
  * Сущность роли
@@ -14,9 +15,9 @@ public class RoleEntity {
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private UUID id;
 
-    @Column(name = "role")
+    @Column(name = "name")
     private String name;
 
 }

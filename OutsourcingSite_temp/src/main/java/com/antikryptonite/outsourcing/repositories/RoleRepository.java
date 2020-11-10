@@ -1,15 +1,16 @@
 package com.antikryptonite.outsourcing.repositories;
 
 import com.antikryptonite.outsourcing.entities.RoleEntity;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.UUID;
 
 /**
  * Репозиторий роли
  */
 @Repository
-public interface RoleRepository extends JpaRepository<RoleEntity, Integer> {
+public interface RoleRepository extends JpaRepository<RoleEntity, UUID> {
 
     /**
      * Поиск роли по имени

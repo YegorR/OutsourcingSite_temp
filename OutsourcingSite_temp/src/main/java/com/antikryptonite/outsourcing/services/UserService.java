@@ -53,7 +53,7 @@ public class UserService {
             throw new UniqueException("User with this email already exists");
         } else {
             UserEntity u = new UserEntity();
-            RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+            RoleEntity userRole = roleRepository.findByName("USER");
             u.setLogin(registrationRequest.getLogin());
             u.setId(UUID.randomUUID());
             u.setRoleEntity(userRole);
@@ -84,7 +84,7 @@ public class UserService {
             throw new UniqueException("User with this email already exists");
         } else {
             UserEntity u = new UserEntity();
-            RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+            RoleEntity userRole = roleRepository.findByName("USER");
             u.setLogin(registrationRequest.getLogin());
             u.setId(UUID.randomUUID());
             u.setRoleEntity(userRole);

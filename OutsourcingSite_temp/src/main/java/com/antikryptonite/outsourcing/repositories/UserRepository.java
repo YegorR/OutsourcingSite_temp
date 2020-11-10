@@ -1,7 +1,6 @@
 package com.antikryptonite.outsourcing.repositories;
 
 import com.antikryptonite.outsourcing.entities.UserEntity;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

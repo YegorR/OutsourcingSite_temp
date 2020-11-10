@@ -104,9 +104,14 @@ public class UserService {
      *
      * @param confirmRegistration - личный номер пользователя
      */
-    public void activateUser(String confirmRegistration) {
+    public String activateUser(String confirmRegistration) {
         UserEntity userEntity = userRepository.findByConfirmRegistration(confirmRegistration);
+        if (userEntity == null) {
+            return "User is not found";
+        }
         userEntity.setConfirm(true);
+        userEntity.setConfirmRegistration(null);
         userRepository.save(userEntity);
+        return "You are activated!";
     }
 }

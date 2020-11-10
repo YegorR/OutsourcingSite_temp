@@ -44,9 +44,13 @@ public class AuthController {
      */
     @GetMapping("/activate/{code}")
     public String activate(@PathVariable String code) {
-        userService.activateUser(code);
-        return "You are activated!";
+        return userService.activateUser(code);
     }
+//    @GetMapping("/activate/{code}")
+//    public String activate(@PathVariable String code) {
+//        userService.activateUser(code);
+//        return "You are activated!";
+//    }
 
     /**
      * POST-запрос на аутентификацию

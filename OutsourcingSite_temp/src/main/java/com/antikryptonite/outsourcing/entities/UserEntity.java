@@ -22,6 +22,12 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "confirm_registration")
+    private String confirmRegistration;
+
+    @Column(name = "confirm")
+    private boolean confirm;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;

@@ -1,8 +1,6 @@
 package com.antikryptonite.outsourcing.controllers;
 
-import com.antikryptonite.outsourcing.dto.AuthRequest;
-import com.antikryptonite.outsourcing.dto.AuthResponse;
-import com.antikryptonite.outsourcing.dto.RegistrationRequest;
+import com.antikryptonite.outsourcing.dto.*;
 import com.antikryptonite.outsourcing.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +35,17 @@ public class AuthController {
     public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         userService.saveUser(registrationRequest);
         return "OK";
+    }
+
+    /**
+     * GET-запрос на подтверждение аккаунта
+     * @param code - личный номер пользователя
+     * @return - возвращает строку об успешном подтверждении аккаунта
+     */
+    @GetMapping("/activate/{code}")
+    public String activate(@PathVariable String code) {
+        userService.activateUser(code);
+        return "You are activated!";
     }
 
     /**

@@ -3,8 +3,9 @@ package com.antikryptonite.outsourcing.services;
 import com.antikryptonite.outsourcing.dto.RegistrationRequest;
 import com.antikryptonite.outsourcing.entities.*;
 import com.antikryptonite.outsourcing.exceptions.UniqueException;
+import com.antikryptonite.outsourcing.mail.*;
 import com.antikryptonite.outsourcing.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,18 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
+    private final EmailSender emailSender;
+
     private PasswordEncoder passwordEncoder;
 
     /**
      * Конструктор сервиса
      */
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, EmailSender emailSender) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.emailSender = emailSender;
     }
 
     /**
@@ -45,6 +49,7 @@ public class UserService {
      *
      * @param registrationRequest - параметры пользователя
      */
+
     public void saveUser(RegistrationRequest registrationRequest) {
         if (userRepository.findByLogin(registrationRequest.getLogin()) != null) {
             throw new UniqueException();
@@ -55,7 +60,15 @@ public class UserService {
             u.setId(UUID.randomUUID());
             u.setRoleEntity(userRole);
             u.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+            u.setConfirm(false);
+            u.setConfirmRegistration(UUID.randomUUID().toString());
             userRepository.save(u);
+
+            EmailMessage emailMessage = new EmailMessage();
+            emailMessage.setEmail(registrationRequest.getLogin());
+            emailMessage.setText("Welcome to Anti-Kryptonite! Please visit next link: http://localhost:8082/api/activate/" + u.getConfirmRegistration());
+            emailMessage.setSubject("Hello friend!");
+            emailSender.send(emailMessage);
         }
     }
 
@@ -86,4 +99,14 @@ public class UserService {
         return null;
     }
 
+    /**
+     * Активация пользователя
+     *
+     * @param confirmRegistration - личный номер пользователя
+     */
+    public void activateUser(String confirmRegistration) {
+        UserEntity userEntity = userRepository.findByConfirmRegistration(confirmRegistration);
+        userEntity.setConfirm(true);
+        userRepository.save(userEntity);
+    }
 }

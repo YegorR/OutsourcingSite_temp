@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="admin" id="1">
+
+        <!-- Создание таблицы пользователей -->
+        <createTable tableName="user_table">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="confirm" type="boolean" defaultValueBoolean="false"/>
+
+            <column name="role_id" type="UUID">
+                <constraints foreignKeyName="fk_user_role"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="user_table"/>
+        </rollback>
+
+        <!-- Создание таблицы ролей -->
+        <createTable tableName="role_table">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="role_table"/>
+        </rollback>
+
+        <!-- Заполнение таблицы ролей -->
+        <insert tableName="role_table">
+            <column name="id" value="c684098c-0b35-4d35-9f35-aabb7ccd3530"/>
+            <column name="name" value="USER"/>
+        </insert>
+        <insert tableName="role_table">
+            <column name="id" value="b461a277-32c7-426f-a067-4ab529061f9b"/>
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="role_table">
+            <column name="id" value="caaa0b48-afa6-476a-8d6c-e52eea7c1170"/>
+            <column name="name" value="LAWYER"/>
+        </insert>
+        <insert tableName="role_table">
+            <column name="id" value="63a1a5c7-62f3-42f8-af1c-f3fc1beb7113"/>
+            <column name="name" value="SALESMAN"/>
+        </insert>
+        <insert tableName="role_table">
+            <column name="id" value="9bacba1e-d29f-492c-a407-ffa635587017"/>
+            <column name="name" value="PRODUCER"/>
+        </insert>
+        <insert tableName="role_table">
+            <column name="id" value="7db59338-230f-11eb-adc1-0242ac120002"/>
+            <column name="name" value="BAD"/>
+        </insert>
+
+        <!-- Создание внешнего ключа для таблицы пользоватлей на таблицу ролей -->
+        <addForeignKeyConstraint baseTableName="user_table"
+                                 baseColumnNames="id"
+                                 constraintName="fk_user_role"
+                                 referencedTableName="role_table"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+        />
+
+    </changeSet>
+</databaseChangeLog>

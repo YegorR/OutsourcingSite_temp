@@ -22,6 +22,21 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "org_name")
+    private String orgName;
+
+    @Column(name = "inn_number")
+    private String innNumber;
+
     @Column(name = "confirm_registration")
     private String confirmRegistration;
 

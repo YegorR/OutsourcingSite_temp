@@ -1,6 +1,7 @@
 package com.antikryptonite.outsourcing.controllers;
 
 import com.antikryptonite.outsourcing.dto.*;
+import com.antikryptonite.outsourcing.exceptions.UniqueException;
 import com.antikryptonite.outsourcing.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,24 @@ public class AuthController {
     }
 
     /**
-     * POST-запрос на регистрацию
-     * @param registrationRequest - тело запроса с логином и паролем
+     * POST-запрос на регистрацию физического лица
+     * @param registrationRequest - тело запроса с параметрами
      * @return - возвращает строку ОК
      */
-    @PostMapping("/register")
-    public String registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
-        userService.saveUser(registrationRequest);
+    @PostMapping("/register/individual")
+    public String registerIndUser(@RequestBody @Valid RegistrationIndividualRequest registrationRequest) throws UniqueException {
+        userService.saveIndUser(registrationRequest);
+        return "OK";
+    }
+
+    /**
+     * POST-запрос на регистрацию юридического лица
+     * @param registrationRequest - тело запроса с параметрами
+     * @return - возвращает строку ОК
+     */
+    @PostMapping("/register/entity")
+    public String registerEntUser(@RequestBody @Valid RegistrationEntityRequest registrationRequest) throws UniqueException {
+        userService.saveEntUser(registrationRequest);
         return "OK";
     }
 
@@ -46,11 +58,6 @@ public class AuthController {
     public String activate(@PathVariable String code) {
         return userService.activateUser(code);
     }
-//    @GetMapping("/activate/{code}")
-//    public String activate(@PathVariable String code) {
-//        userService.activateUser(code);
-//        return "You are activated!";
-//    }
 
     /**
      * POST-запрос на аутентификацию
